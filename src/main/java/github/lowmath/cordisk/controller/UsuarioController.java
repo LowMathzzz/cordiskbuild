@@ -32,6 +32,15 @@ public class UsuarioController {
         return usuariodata.save(usuario);
     }
 
+    @GetMapping("check")
+    public ResponseEntity<?> check(@RequestBody UserLogin user) {
+        Usuario usuario = usuariodata.findByEmail(user.username()).orElse(null);
+        if (usuario == null) {
+            return ResponseEntity.badRequest.build();
+        }
+        return ResponseEntity.ok();
+    }
+
     @PutMapping("/{id}")
     public Usuario updateUsuario(@PathVariable String id, @RequestBody Usuario usuarioDetails) {
         Usuario usuario = usuariodata.findById(id).orElse(null);
@@ -50,3 +59,4 @@ public class UsuarioController {
     }
 }
 
+public record UserLogin(string username, string password);
